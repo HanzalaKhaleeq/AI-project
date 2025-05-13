@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-alt: #334155;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #60a5fa;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+      --radius: 8px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    header {
+      background: var(--surface);
+      padding: 2rem;
+      border-radius: 0 0 var(--radius) var(--radius);
+      text-align: center;
+    }
+    h1 {
+      color: var(--accent);
+      font-size: 2.5rem;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+    .intro {
+      margin-top: 1rem;
+      color: var(--text-muted);
+    }
+    .key-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .metric-card {
+      background: var(--surface-alt);
+      padding: 1rem;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+    .metric-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    section {
+      margin: 2rem 0;
+    }
+    .section-title {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .visualization {
+      background: var(--surface-alt);
+      padding: 1rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .visualization img {
+      max-width: 100%;
+      border-radius: var(--radius);
+    }
+    .dual-visualization {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: center;
+      border-bottom: 1px solid var(--surface);
+    }
+    th {
+      background: var(--surface);
+      color: var(--text);
+    }
+    td {
+      color: var(--text-muted);
+    }
+    footer {
+      margin: 3rem 0;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{ title }}</h1>
+    <p class="subtitle">{{ subtitle }}</p>
+    <p class="intro">{{ description }}</p>
+  </header>
+  <div class="container">
+    <div class="key-metrics">
+      <div class="metric-card">
+        <div class="metric-value">{{ top_accuracy }}</div>
+        <div class="metric-label">Top Accuracy</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">{{ top_f1 }}</div>
+        <div class="metric-label">Best F1 Score</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">{{ num_classes }}</div>
+        <div class="metric-label">Classes</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">{{ num_features }}</div>
+        <div class="metric-label">Features</div>
+      </div>
+    </div>
+
+    <section>
+      <h2 class="section-title"><i class="fas fa-chart-bar"></i> Performance Metrics</h2>
+      <div class="visualization">
+        <img src="{{ metrics_img }}" alt="Performance Metrics" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title"><i class="fas fa-chart-line"></i> ROC Curves</h2>
+      <div class="visualization">
+        <img src="{{ roc_img }}" alt="ROC Curves" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title"><i class="fas fa-stopwatch"></i> Load vs Inference Time</h2>
+      <div class="visualization">
+        <img src="{{ times_img }}" alt="Load vs Inference Time" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title"><i class="fas fa-project-diagram"></i> Confusion Matrix</h2>
+      <div class="visualization">
+        <img src="{{ confusion_img }}" alt="Confusion Matrix" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title"><i class="fas fa-map"></i> t-SNE Projection</h2>
+      <div class="dual-visualization">
+        <div class="visualization">
+          <img src="{{ tsne_true_img }}" alt="t-SNE True" />
+        </div>
+        <div class="visualization">
+          <img src="{{ tsne_kmeans_img }}" alt="t-SNE K-Means" />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title"><i class="fas fa-thermometer-half"></i> Class-wise F1 Scores</h2>
+      <div class="visualization">
+        <img src="{{ f1_heatmap_img }}" alt="Class-wise F1 Heatmap" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title"><i class="fas fa-table"></i> Comparison Table</h2>
+      <div class="visualization">
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Accuracy</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>F1 Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in models %}
+            <tr>
+              <td>{{ m.name }}</td>
+              <td>{{ '{:.2%}'.format(m.accuracy) }}</td>
+              <td>{{ '{:.2%}'.format(m.precision) }}</td>
+              <td>{{ '{:.2%}'.format(m.recall) }}</td>
+              <td>{{ '{:.2%}'.format(m.f1) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title"><i class="fas fa-lightbulb"></i> Key Insights</h2>
+      <div class="visualization">
+        <ul style="list-style-type: disc; padding-left: 1.5rem; color: var(--text-muted);">
+          {% for i in insights %}
+          <li>{{ i }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <p>Generated on {{ generation_date }} | {{ footer_text }}</p>
+    </footer>
+  </div>
+</body>
+</html>
